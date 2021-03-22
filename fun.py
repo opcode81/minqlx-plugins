@@ -63,6 +63,21 @@ _re_squish = re.compile(r"^squish\W?$", flags=re.IGNORECASE)
 _re_oh_god = re.compile(r"^oh god\W?$", flags=re.IGNORECASE)
 _re_snarl = re.compile(r"^snarl\W?$", flags=re.IGNORECASE)
 
+
+class CustomSound:
+    def __init__(self, regex, sound):
+        self.regex = re.compile(regex, flags=re.IGNORECASE)
+        self.sound = sound
+        
+    def check(self, msg):
+        return self.regex.match(msg) is not None
+        
+        
+_custom = []
+_custom.append(CustomSound(r"^cooller\W?$", "sounds/homermix4/cooller.ogg"))
+        
+
+
 class fun(minqlx.Plugin):
     database = Redis
 
@@ -163,6 +178,12 @@ class fun(minqlx.Plugin):
             self.play_sound("sound/player/ranger/taunt.wav")
         elif _re_snarl.match(msg):
             self.play_sound("sound/player/sorlag/taunt.wav")
+        else:
+            for cs in _custom:
+                if cs.check(msg):
+                    self.play_sound(cs.sound)
+                    break
+                
 
     def play_sound(self, path):
         if not self.last_sound:
