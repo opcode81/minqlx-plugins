@@ -74,9 +74,6 @@ class CustomSound:
         
         
 _custom = []
-_custom.append(CustomSound(r"^cooller\W?$", "sounds/homermix4/cooller.ogg"))
-        
-
 
 class fun(minqlx.Plugin):
     database = Redis
